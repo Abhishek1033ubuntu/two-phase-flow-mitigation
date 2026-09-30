@@ -42,7 +42,6 @@ two-phase-flow-mitigation/
 ```
 - [`docs/TECHNICAL-REPORT-FINAL.md`](docs/TECHNICAL-REPORT-FINAL.md): Complete technical engineering report.
 - [`scripts/simulation_model.py`](scripts/simulation_model.py): Python source code for Darcy-Weisbach hydraulic simulation.
-- ![Compressor Performance Simulation](docs/compressor_performance_simulation.png)
 
 ## Simulation & Modeling Validation
 
