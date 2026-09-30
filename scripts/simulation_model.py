@@ -3,11 +3,9 @@
 Two-Phase Flow Mitigation: 10-Year Pipeline Specific Resistance Simulation
 Co-Engineered in Collaboration with Google Gemini
 ===============================================================================
-This script calculates and plots the specific hydraulic resistance (kPa / (m^3/s))
-and pressure drop per unit volume flow rate across a 10-year operational lifespan 
-for long-distance gas transmission pipelines.
 """
 
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -54,7 +52,7 @@ plaque_mitigated = 0.10 * (years / 10.0)
 dP_Q_mitigated = calculate_dp_per_q(plaque_mitigated, parasitic_penalty_ratio=0.008)
 
 # =============================================================================
-# VISUALIZATION GENERATION
+# VISUALIZATION GENERATION & SAVING
 # =============================================================================
 plt.figure(figsize=(10, 6), dpi=150)
 plt.plot(years, dP_Q_unmitigated / 1e3, 'r--', linewidth=2.5, label='Unmitigated System (9.00 mm Plaque)')
@@ -68,8 +66,11 @@ plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend(fontsize=11)
 plt.tight_layout()
 
-# Save output graph image for README integration
-plt.savefig('docs/compressor_performance_simulation.png')
+# Auto-create 'docs' directory if it doesn't exist
+os.makedirs('docs', exist_ok=True)
+
+# Save output graph image
+plt.savefig('docs/compressor_performance_simulation.png', dpi=300, bbox_inches='tight')
 plt.show()
 
 # Print Numeric Metrics
