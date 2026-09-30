@@ -2,7 +2,8 @@
 
 ![Status](https://img.shields.io/badge/Status-Approved_for_Bench--Top_Testing-brightgreen)
 ![System Class](https://img.shields.io/badge/System_Class-Multi--Frequency_Engineering-blue)
-![AI Collaborator](https://img.shields.io/badge/Collaborator-Google_Gemini-8E75B2?logo=google-gemini&logoColor=white)
+![AI Collaborator](https://img.shields.io/badge/Collaborator-Google_Gemini-8E75B2?logo=google-gemini&logoColor=white) 
+[![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.23063656-blue?style=for-the-badge&logo=zenodo&logoColor=white)](https://doi.org/10.5281/zenodo.23063656) 
 
 ## Overview
 This repository contains the full engineering investigation, thermomechanical modeling, and hydraulic simulation for **Two-Phase Gas-Fluid Stratification and Lubricant-Commodity Mixing in Compressors and Pipeline Systems**.
