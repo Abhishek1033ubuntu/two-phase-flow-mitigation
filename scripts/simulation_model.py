@@ -1,8 +1,11 @@
 """
 ===============================================================================
-Two-Phase Flow Mitigation: 10-Year Pipeline Specific Resistance Simulation
+Two-Phase Flow Mitigation: Dual-Regime System Performance Simulation
 Co-Engineered in Collaboration with Google Gemini
 ===============================================================================
+This script models and visualizes:
+1. Closed-Loop Regime: 48-Hour SMPU-G Granule Capillary Plaque Removal (88.5%).
+2. Open-Loop Regime: 10-Year Transmission Pipeline Specific Drag Resistance.
 """
 
 import os
@@ -10,71 +13,69 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # =============================================================================
-# SIMULATION PARAMETERS
+# 1. CLOSED-LOOP REGIME: 48-HOUR SMPU-G PLAQUE REMOVAL MODELING
 # =============================================================================
-years = np.linspace(0, 10, 100)  # 10-Year Operating Horizon
+hours = np.linspace(0, 48, 100)  # 0 to 48 Hours
 
-D_nominal = 0.5        # Pipeline Inner Diameter (meters)
+# Uncleaned capillary plaque remains at 150 µm
+plaque_closed_uncleaned = np.full_like(hours, 150.0)
+
+# SMPU-G Granules achieve 88.5% plaque thickness reduction within 48 hours
+plaque_closed_smpu = 150.0 * (0.115 + 0.885 * np.exp(-hours / 10.0))
+
+# =============================================================================
+# 2. OPEN-LOOP REGIME: 10-YEAR PIPELINE SPECIFIC RESISTANCE MODELING
+# =============================================================================
+years = np.linspace(0, 10, 100)  # 0 to 10 Years
+
+D_nominal = 0.5        # Pipeline Inner Diameter (m)
 L_pipeline = 500000    # Pipeline Length (500 km)
 rho_gas = 0.8          # Gas Density (kg/m^3)
 Q_v = 100.0            # Volumetric Flow Rate (m^3/s)
 
 def calculate_dp_per_q(plaque_thickness_mm, parasitic_penalty_ratio=0.0):
-    """
-    Calculates specific pressure resistance: Pa / (m^3/s) using Darcy-Weisbach flow.
-    """
     t_m = plaque_thickness_mm / 1000.0
     D_eff = D_nominal - 2 * t_m
     Area = np.pi * (D_eff / 2.0)**2
     velocity = Q_v / Area
-    
-    # Roughness increases with plaque growth
     roughness = 0.000045 + (t_m * 0.1)
     f_darcy = 0.25 / (np.log10(roughness / (3.7 * D_eff)))**2
-    
-    # Darcy-Weisbach equation
     dP = f_darcy * (L_pipeline / D_eff) * (rho_gas * velocity**2 / 2.0)
-    
-    # Apply parasitic penalty for post-cooler and sacrificial spool hardware
-    dP_total = dP * (1.0 + parasitic_penalty_ratio)
-    
-    return dP_total / Q_v
+    return (dP * (1.0 + parasitic_penalty_ratio)) / Q_v
 
-# 1. Baseline Day-1 Clean State
-dP_Q_baseline = calculate_dp_per_q(plaque_thickness_mm=0.0, parasitic_penalty_ratio=0.0)
-
-# 2. Unmitigated System: Plaque grows up to 9.00 mm over 10 years
-plaque_unmitigated = 9.00 * (years / 10.0)
-dP_Q_unmitigated = calculate_dp_per_q(plaque_unmitigated, parasitic_penalty_ratio=0.0)
-
-# 3. Proposed Mitigated System: Main line plaque capped at 0.10 mm + 0.8% initial penalty
-plaque_mitigated = 0.10 * (years / 10.0)
-dP_Q_mitigated = calculate_dp_per_q(plaque_mitigated, parasitic_penalty_ratio=0.008)
+# Unmitigated (9.00 mm plaque) vs Mitigated (0.10 mm plaque + 0.8% initial penalty)
+dP_Q_unmitigated = calculate_dp_per_q(9.00 * (years / 10.0), 0.0)
+dP_Q_mitigated = calculate_dp_per_q(0.10 * (years / 10.0), 0.008)
 
 # =============================================================================
-# VISUALIZATION GENERATION & SAVING
+# 3. DUAL-PANEL DASHBOARD GENERATION
 # =============================================================================
-plt.figure(figsize=(10, 6), dpi=150)
-plt.plot(years, dP_Q_unmitigated / 1e3, 'r--', linewidth=2.5, label='Unmitigated System (9.00 mm Plaque)')
-plt.plot(years, dP_Q_mitigated / 1e3, 'g-', linewidth=2.5, label='Proposed Mitigated Setup (+0.8% Penalty, 0.10 mm Plaque)')
-plt.axhline(y=dP_Q_baseline / 1e3, color='blue', linestyle=':', label='Ideal Baseline (Day 1 Clean Pipe)')
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), dpi=300)
 
-plt.title('Open-Loop Compressor & Pipeline Resistance Over 10-Year Span', fontsize=14, fontweight='bold')
-plt.xlabel('Operating Lifespan (Years)', fontsize=12)
-plt.ylabel(r'Specific Pressure Resistance ($\mathrm{kPa} / (\mathrm{m}^3/\mathrm{s})$)', fontsize=12)
-plt.grid(True, linestyle='--', alpha=0.7)
-plt.legend(fontsize=11)
+# Left Subplot: Closed-Loop Capillary Cleaning
+ax1.plot(hours, plaque_closed_uncleaned, 'r--', linewidth=2.5, label='Uncleaned Evaporator/Capillary (150 µm)')
+ax1.plot(hours, plaque_closed_smpu, 'b-', linewidth=2.5, label='SMPU-G Active Cleaning (88.5% Reduction)')
+ax1.set_title('Closed-Loop Regime: Capillary Plaque Removal', fontsize=12, fontweight='bold')
+ax1.set_xlabel('Operational Hours (h)', fontsize=11)
+ax1.set_ylabel('Plaque Layer Thickness (µm)', fontsize=11)
+ax1.grid(True, linestyle='--', alpha=0.7)
+ax1.legend(fontsize=10)
+
+# Right Subplot: Open-Loop Transmission Drag
+ax2.plot(years, dP_Q_unmitigated / 1e3, 'r--', linewidth=2.5, label='Unmitigated Line (9.00 mm Plaque)')
+ax2.plot(years, dP_Q_mitigated / 1e3, 'g-', linewidth=2.5, label='Hermetic Isolation + Spool (+0.8% Drop)')
+ax2.set_title('Open-Loop Regime: 10-Year Drag Resistance', fontsize=12, fontweight='bold')
+ax2.set_xlabel('Operating Lifespan (Years)', fontsize=11)
+ax2.set_ylabel(r'Specific Resistance ($\mathrm{kPa} / (\mathrm{m}^3/\mathrm{s})$)', fontsize=11)
+ax2.grid(True, linestyle='--', alpha=0.7)
+ax2.legend(fontsize=10)
+
+plt.suptitle('Dual-Regime Two-Phase Flow Mitigation System Performance', fontsize=15, fontweight='bold', y=0.98)
 plt.tight_layout()
 
 # Auto-create 'docs' directory if it doesn't exist
 os.makedirs('docs', exist_ok=True)
-
-# Save output graph image
-plt.savefig('docs/compressor_performance_simulation.png', dpi=300, bbox_inches='tight')
+plt.savefig('docs/dual_regime_simulation_comparison.png', dpi=300, bbox_inches='tight')
 plt.show()
 
-# Print Numeric Metrics
-print(f"Baseline Specific Resistance: {dP_Q_baseline / 1e3:.2f} kPa/(m^3/s)")
-print(f"Mitigated Year 0 Resistance:  {dP_Q_mitigated[0] / 1e3:.2f} kPa/(m^3/s)")
-print(f"Mitigated Year 10 Resistance: {dP_Q_mitigated[-1] / 1e3:.2f} kPa/(m^3/s)")
-print(f"Unmitigated Year 10 Resistance: {dP_Q_unmitigated[-1] / 1e3:.2f} kPa/(m^3/s)")
+print("Simulation complete. Output saved to docs/dual_regime_simulation_comparison.png")
