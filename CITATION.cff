@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+title: "Two-Phase Flow & Lubricant Contamination Mitigation in Compression Systems"
+message: "If you use this software, technical report, or simulation model in your research, please cite it as below."
+type: software
+authors:
+  - family-names: "Singh"
+    given-names: "Abhishek"
+    alias: "Abhishek1033ubuntu"
+repository-code: "https://github.com/Abhishek1033ubuntu/two-phase-flow-mitigation"
+abstract: "Comprehensive engineering investigation, thermomechanical modeling, and hydraulic simulation for mitigating two-phase gas-fluid stratification, capillary paraffin plaque, and lubricant contamination in closed-loop refrigeration and open-loop gas transmission pipelines."
+keywords:
+  - "two-phase flow"
+  - "fluid dynamics"
+  - "compression systems"
+  - "shape-memory polyurethane"
+  - "hermetic source isolation"
+  - "darcy-weisbach simulation"
+license: MIT
+version: "1.0.0"
+date-released: "2026-09-30"
