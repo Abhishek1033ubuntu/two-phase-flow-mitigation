@@ -26,7 +26,15 @@ The solution addresses two distinct operational regimes:
 - [`docs/TECHNICAL-REPORT-FINAL.md`](docs/TECHNICAL-REPORT-FINAL.md): Complete technical engineering report.
 - [`scripts/simulation_model.py`](scripts/simulation_model.py): Python source code for Darcy-Weisbach hydraulic simulation.
 - ![Compressor Performance Simulation](docs/compressor_performance_simulation.png)
-  
+
+## Simulation & Modeling Validation
+
+![Dual-Regime Performance Simulation](docs/dual_regime_simulation_comparison.png)
+
+### Key Insights from Dual-Regime Simulation:
+1. **Closed-Loop System:** SMPU-G granules dynamically switch to a rigid glassy state ($E = 219.7\text{ MPa}$) in cold zones[cite: 5], shearing away $88.5\%$ of paraffin plaque within $48\text{ hours}$ without damaging $20\ \mu\text{m}$ compressor rotor gaps[cite: 5].
+2. **Open-Loop System:** Hermetic source isolation restricts downstream main line plaque to $\le 0.10\text{ mm}$ over $10\text{ years}$[cite: 5], preserving specific drag resistance near baseline levels ($\approx 12,785\ \text{kPa}/(\text{m}^3/\text{s})$)[cite: 2, 5].
+
 ## Acknowledgments
 - **Google Gemini**: Co-engineering collaboration, hydraulic simulation modeling, and technical report drafting.
 
