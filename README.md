@@ -23,6 +23,23 @@ The solution addresses two distinct operational regimes:
 | **Net Pressure Head** | High Frictional Loss | +46.8 to +66.8 bar | Full Delivery Preserved |
 
 ## Repository Structure
+```
+two-phase-flow-mitigation/
+│
+├── README.md                           <-- Executive Summary, Badges & Dual Chart
+├── LICENSE                             <-- MIT License
+├── requirements.txt                    <-- Dependencies (numpy, matplotlib)
+├── CONTRIBUTING.md                     <-- Guidelines for external research contributions
+│
+├── docs/
+│   ├── TECHNICAL-REPORT-FINAL.md       <-- Complete Technical Report [1]
+│   ├── hydraulic-simulation-data.md    <-- Equations, Tables & Elevation Calculations [2]
+│   ├── REFERENCES.md                   <-- Citation Index Mapping [1, 2, 3]
+│   └── dual_regime_simulation_comparison.png <-- High-Res Dashboard Image
+│
+└── scripts/
+    └── simulation_model.py             <-- Executable Dual-Regime Python Code [3]
+```
 - [`docs/TECHNICAL-REPORT-FINAL.md`](docs/TECHNICAL-REPORT-FINAL.md): Complete technical engineering report.
 - [`scripts/simulation_model.py`](scripts/simulation_model.py): Python source code for Darcy-Weisbach hydraulic simulation.
 - ![Compressor Performance Simulation](docs/compressor_performance_simulation.png)
