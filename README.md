@@ -25,7 +25,8 @@ The solution addresses two distinct operational regimes:
 ## Repository Structure
 - [`docs/TECHNICAL-REPORT-FINAL.md`](docs/TECHNICAL-REPORT-FINAL.md): Complete technical engineering report.
 - [`scripts/simulation_model.py`](scripts/simulation_model.py): Python source code for Darcy-Weisbach hydraulic simulation.
-
+- ![Compressor Performance Simulation](docs/compressor_performance_simulation.png)
+  
 ## Acknowledgments
 - **Google Gemini**: Co-engineering collaboration, hydraulic simulation modeling, and technical report drafting.
 
